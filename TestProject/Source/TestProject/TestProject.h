@@ -1,0 +1,23 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+#pragma once
+
+#include "EngineMinimal.h"
+#include <Logging/LogMacros.h>
+#include <Logging/LogVerbosity.h>
+
+UENUM(BlueprintType)
+enum class ECharacterState : uint8
+{
+	PREINIT,
+	LOADING,
+	READY,
+	DEAD
+};
+
+DECLARE_LOG_CATEGORY_EXTERN(TestProject_log, Log, All);
+
+#define ABLOG_CALLINFO (FString(__FUNCTION__) + TEXT("(") + FString::FromInt(__LINE__) + TEXT(")"))
+#define ABLOG_S(Verbosity) UE_LOG(TestProject_log, Verbosity, TEXT("%s"), *ABLOG_CALLINFO)
+#define ABLOG(Verbosity, Format, ...) UE_LOG(TestProject_log, Verbosity, TEXT("%s %s"), *ABLOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
+#define ABCHECK(Expr, ...) {if(!(Expr)) {ABLOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__;}}
